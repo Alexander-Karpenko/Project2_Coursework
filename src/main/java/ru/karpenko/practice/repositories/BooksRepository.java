@@ -15,7 +15,6 @@ import java.util.List;
 @Repository
 public interface BooksRepository extends JpaRepository<Book, Integer> {
     List<Book> findByOwner (Person person);
-    @Query("select b from Book b")
     Page<Book> findAll(Pageable pageable);
     List<Book> findAll(Sort sort);
 }
