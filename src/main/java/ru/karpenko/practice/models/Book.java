@@ -1,49 +1,60 @@
 package ru.karpenko.practice.models;
 
+import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
-
+@Entity
+@Table(name = "book")
 public class Book {
-    private int book_id;
-    private int person_id;
+    @Id
+    @Column(name = "book_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
 
+    @ManyToOne
+    @JoinColumn(name = "person_id", referencedColumnName = "person_id")
+    private Person owner;
+
+    @Column(name = "name")
     @NotEmpty(message = "Name should not be empty")
     @Size(min = 2, max = 50, message = "Name is too short")
     private String name;
+
+    @Column(name = "author")
     @NotEmpty(message = "Author's Name should not be empty")
     @Size(min = 2, max = 50, message = "Author's name is too short")
     private String author;
 
+    @Column(name = "year_of_issue")
     @Min(value = 1, message = "Age should be greater than 0")
-    private int year_of_issue;
+    private int yearOfIssue;
 
     public Book(){
 
     }
 
-    public Book(int book_id, int person_id, String name, String author, int year_of_issue) {
-        this.book_id = book_id;
-        this.person_id = person_id;
+    public Book(Person owner, String name, String author, int yearOfIssue) {
+        this.owner = owner;
         this.name = name;
         this.author = author;
-        this.year_of_issue = year_of_issue;
+        this.yearOfIssue = yearOfIssue;
     }
 
-    public int getBook_id() {
-        return book_id;
+    public int getId() {
+        return id;
     }
 
-    public void setBook_id(int book_id) {
-        this.book_id = book_id;
+    public void setId(int bookId) {
+        this.id = bookId;
     }
 
-    public int getPerson_id() {
-        return person_id;
+    public Person getOwner() {
+        return owner;
     }
 
-    public void setPerson_id(int person_id) {
-        this.person_id = person_id;
+    public void setOwner(Person owner) {
+        this.owner = owner;
     }
 
     public String getName() {
@@ -62,11 +73,22 @@ public class Book {
         this.author = author;
     }
 
-    public int getYear_of_issue() {
-        return year_of_issue;
+    public int getYearOfIssue() {
+        return yearOfIssue;
     }
 
-    public void setYear_of_issue(int year_of_issue) {
-        this.year_of_issue = year_of_issue;
+    public void setYearOfIssue(int yearOfIssue) {
+        this.yearOfIssue = yearOfIssue;
+    }
+
+    @Override
+    public String toString() {
+        return "Book{" +
+                "bookId=" + id +
+                ", owner=" + owner +
+                ", name='" + name + '\'' +
+                ", author='" + author + '\'' +
+                ", yearOfIssue=" + yearOfIssue +
+                '}';
     }
 }

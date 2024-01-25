@@ -14,9 +14,9 @@
     <p  th:each="book:${books}" th:text="${book.getName()}">book_name</p>
 </div>
 
-<a th:href="@{/people/{id}/edit(id=${person.getPerson_id()})}"><input type="submit" value="Редактировать"/></a>
+<a th:href="@{/people/{id}/edit(id=${person.getId()})}"><input type="submit" value="Редактировать"/></a>
 
-<form th:method="DELETE" th:action="@{/people/{id}(id=${person.getPerson_id()})}">
+<form th:method="DELETE" th:action="@{/people/{id}(id=${person.getId()})}">
     <input type="submit" value="Удалить"/>
 </form>
 </body>
