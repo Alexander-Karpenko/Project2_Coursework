@@ -16,7 +16,7 @@
     <br/>
     <label for="year_of_issue">Введите год выпуска: </label>
     <input type="text" th:field="*{yearOfIssue}" id="year_of_issue"/>
-    <div style="color:red" th:if="${#fields.hasErrors('year_of_issue')}" th:errors="*{yearOfIssue}">Name Error</div>
+<!--    <div style="color:red" th:if="${#fields.hasErrors('year_of_issue')}" th:errors="*{yearOfIssue}">Name Error</div>-->
     <br/>
     <input type="submit" value="Создать"/>
 </form>

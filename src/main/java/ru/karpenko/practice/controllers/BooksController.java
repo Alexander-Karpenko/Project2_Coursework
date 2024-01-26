@@ -13,6 +13,7 @@ import ru.karpenko.practice.services.BooksService;
 import ru.karpenko.practice.services.PeopleService;
 
 import javax.validation.Valid;
+import java.util.Date;
 
 
 @Controller
@@ -97,18 +98,25 @@ public class BooksController {
     }
     @PatchMapping("/{id}/add")
     public String appointBook(@PathVariable("id") int id, @ModelAttribute Person person ){
-        Book book = booksService.findOne(id);
-        book.setOwner(person);
-        booksService.save(book);
-//        booksService.appointBook(id, person);
+        booksService.appointBook(id, person);
         return "redirect:/books";
     }
     @PatchMapping("/{id}/release")
     public String releaseBook(@PathVariable("id") int id){
-        Book book = booksService.findOne(id);
-        book.setOwner(null);
-        booksService.save(book);
+        booksService.releaseBook(id);
         return  "redirect:/books";
+    }
+
+    @GetMapping("/search")
+    public String searchForm (){
+        return "books/search_form";
+    }
+
+    @GetMapping(value = "/search", params = {"search"})
+    public String search ( Model model, @RequestParam("search") String name)
+    {
+        model.addAttribute("found_books", booksService.searchByName(name));
+        return "books/search";
     }
 }
 

@@ -1,9 +1,13 @@
 package ru.karpenko.practice.models;
 
+import org.springframework.transaction.annotation.Transactional;
+
 import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
+import java.util.Date;
+
 @Entity
 @Table(name = "book")
 public class Book {
@@ -29,6 +33,13 @@ public class Book {
     @Column(name = "year_of_issue")
     @Min(value = 1, message = "Age should be greater than 0")
     private int yearOfIssue;
+
+    @Column(name = "appoint_time")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date appointTime;
+
+    @Transient
+    private boolean overdue;
 
     public Book(){
 
@@ -79,6 +90,22 @@ public class Book {
 
     public void setYearOfIssue(int yearOfIssue) {
         this.yearOfIssue = yearOfIssue;
+    }
+
+    public Date getAppointTime() {
+        return appointTime;
+    }
+
+    public void setAppointTime(Date appointTime) {
+        this.appointTime = appointTime;
+    }
+
+    public boolean isOverdue() {
+        return overdue;
+    }
+
+    public void setOverdue(boolean overdue) {
+        this.overdue = overdue;
     }
 
     @Override

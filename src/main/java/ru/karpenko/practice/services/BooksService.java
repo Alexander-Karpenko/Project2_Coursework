@@ -10,8 +10,14 @@ import ru.karpenko.practice.models.Book;
 import ru.karpenko.practice.models.Person;
 import ru.karpenko.practice.repositories.BooksRepository;
 
+import java.text.ParseException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.text.SimpleDateFormat;
 
 @Service
 @Transactional(readOnly = true)
@@ -50,8 +56,6 @@ public class BooksService {
     }
 
   public List<Book> findAll(int pageNum, int size){
-//      Pageable page =  PageRequest.of(pageNum, size);
-//      return booksRepository.findAll(page);
       return booksRepository.findAll(PageRequest.of(pageNum, size)).getContent();
   }
   public List<Book> findAll(boolean sort){
@@ -69,5 +73,54 @@ public class BooksService {
         }
     }
 
+    public List<Book> searchByName (String name){
+        return booksRepository.findByNameStartingWith(name);
+    }
+
+    @Transactional
+    public void appointBook(int id, Person person){
+        System.out.println("start");
+        Optional<Book> foundBooks = booksRepository.findById(id);
+        Book book = foundBooks.orElse(null);
+        book.setOwner(person);
+        book.setAppointTime(new Date());
+        booksRepository.save(book);
+        System.out.println("end");
+    }
+    @Transactional
+    public void releaseBook(int id){
+        Optional<Book> foundBooks = booksRepository.findById(id);
+        Book book = foundBooks.orElse(null);
+        book.setOwner(null);
+        book.setAppointTime(null);
+        booksRepository.save(book);
+    }
+    public List<Book> checkOverdue(List<Book> books) throws ParseException {
+        for (Book book : books) {
+            if (book.getAppointTime() != null) {
+                java.time.LocalDateTime limitDateTime = java.time.LocalDateTime.now();
+    //            java.time.LocalDateTime currentDateTime = java.time.LocalDateTime.now();
+                limitDateTime = limitDateTime.minusDays(10);
+    //            System.out.println(limitDateTime);
+    //            System.out.println(currentDateTime);
+    //            System.out.println(book.getAppointTime());
+                String[] parts = limitDateTime.toString().split("T");
+                String limDate = parts[0];
+//                System.out.println(limDate);
+    //            String[] parts3 = currentDateTime.toString().split("T");
+    //            String curDate = parts3[0];
+    //            System.out.println(curDate);
+                String[] parts2 = book.getAppointTime().toString().split(" ");
+                String appointTime = parts2[0];
+    //            System.out.println(appointTime);
+                Date appointTimeDate = new SimpleDateFormat("dd-MM-yyyy").parse(appointTime);
+                Date limDateT = new SimpleDateFormat("dd-MM-yyyy").parse(limDate);
+                if ( appointTimeDate.before(limDateT)) {
+                    book.setOverdue(true);
+                }
+            }
+        }
+        return books;
+    }
 
 }

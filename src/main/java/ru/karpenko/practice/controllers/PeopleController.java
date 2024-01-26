@@ -7,10 +7,12 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ru.karpenko.practice.dao.PersonDAO;
 import ru.karpenko.practice.models.Person;
+import ru.karpenko.practice.models.Book;
 import ru.karpenko.practice.services.BooksService;
 import ru.karpenko.practice.services.PeopleService;
 
 import javax.validation.Valid;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,7 +43,12 @@ public class PeopleController {
     public String show(@PathVariable("id") int id, Model model) {
         Person person = peopleService.findOne(id);
         model.addAttribute("person", person);
-        model.addAttribute("books", booksService.findByOwner(person));
+        try {
+            model.addAttribute("books", booksService.checkOverdue(booksService.findByOwner(person)));
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
+//        model.addAttribute("overdue", booksService.checkOverdue());
         return "people/show";
     }
 

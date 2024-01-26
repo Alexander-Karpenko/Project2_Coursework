@@ -11,7 +11,17 @@
 </div>
 <div th:if="${books.size()} != 0">
     <b><p>Книги:</p></b>
-    <p  th:each="book:${books}" th:text="${book.getName()}">book_name</p>
+<!--    <div th:if="${book.} == true"></div>-->
+    <div th:each="book:${books}">
+        <div style="color:red" th:if="${book.isOverdue()} == true">
+            <p th:text="${book.getName()}">book_name</p>
+        </div>
+        <div th:if="${book.isOverdue()} == false">
+            <p th:text="${book.getName()}">book_name</p>
+        </div>
+    </div>
+<!--    <p  th:each="book:${books}" th:text="${book.getName()}">book_name</p>-->
+<!--    <p  th:each="book:${books}" th:text="${book.isOverdue()}">book_name</p>-->
 </div>
 
 <a th:href="@{/people/{id}/edit(id=${person.getId()})}"><input type="submit" value="Редактировать"/></a>

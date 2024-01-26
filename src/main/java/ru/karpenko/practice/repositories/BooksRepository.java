@@ -17,4 +17,5 @@ public interface BooksRepository extends JpaRepository<Book, Integer> {
     List<Book> findByOwner (Person person);
     Page<Book> findAll(Pageable pageable);
     List<Book> findAll(Sort sort);
+    List<Book> findByNameStartingWith (String string);
 }
