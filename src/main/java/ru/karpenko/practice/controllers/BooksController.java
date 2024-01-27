@@ -19,15 +19,11 @@ import java.util.Date;
 @Controller
 @RequestMapping("/books")
 public class BooksController {
-    private final BookDAO bookDAO;
-    private final PersonDAO personDAO;
     private final BooksService booksService;
     private final PeopleService peopleService;
 
     @Autowired
-    public BooksController(BookDAO bookDAO, PersonDAO personDAO, BooksService booksService, PeopleService peopleService) {
-        this.bookDAO = bookDAO;
-        this.personDAO = personDAO;
+    public BooksController( BooksService booksService, PeopleService peopleService) {
         this.booksService = booksService;
         this.peopleService = peopleService;
     }

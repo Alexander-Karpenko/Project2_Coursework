@@ -2,7 +2,6 @@ package ru.karpenko.practice.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,9 +10,6 @@ import ru.karpenko.practice.models.Person;
 import ru.karpenko.practice.repositories.BooksRepository;
 
 import java.text.ParseException;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -99,20 +95,11 @@ public class BooksService {
         for (Book book : books) {
             if (book.getAppointTime() != null) {
                 java.time.LocalDateTime limitDateTime = java.time.LocalDateTime.now();
-    //            java.time.LocalDateTime currentDateTime = java.time.LocalDateTime.now();
                 limitDateTime = limitDateTime.minusDays(10);
-    //            System.out.println(limitDateTime);
-    //            System.out.println(currentDateTime);
-    //            System.out.println(book.getAppointTime());
                 String[] parts = limitDateTime.toString().split("T");
                 String limDate = parts[0];
-//                System.out.println(limDate);
-    //            String[] parts3 = currentDateTime.toString().split("T");
-    //            String curDate = parts3[0];
-    //            System.out.println(curDate);
                 String[] parts2 = book.getAppointTime().toString().split(" ");
                 String appointTime = parts2[0];
-    //            System.out.println(appointTime);
                 Date appointTimeDate = new SimpleDateFormat("dd-MM-yyyy").parse(appointTime);
                 Date limDateT = new SimpleDateFormat("dd-MM-yyyy").parse(limDate);
                 if ( appointTimeDate.before(limDateT)) {

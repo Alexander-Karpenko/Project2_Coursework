@@ -20,15 +20,12 @@ import java.util.List;
 @RequestMapping("/people")
 public class PeopleController {
 
-    private final PersonDAO personDAO;
-
     private final PeopleService peopleService;
 
     private final BooksService booksService;
 
     @Autowired
-    public PeopleController(PersonDAO personDAO, PeopleService peopleService, BooksService booksService) {
-        this.personDAO = personDAO;
+    public PeopleController( PeopleService peopleService, BooksService booksService) {
         this.peopleService = peopleService;
         this.booksService = booksService;
     }
@@ -48,7 +45,6 @@ public class PeopleController {
         } catch (ParseException e) {
             throw new RuntimeException(e);
         }
-//        model.addAttribute("overdue", booksService.checkOverdue());
         return "people/show";
     }
 

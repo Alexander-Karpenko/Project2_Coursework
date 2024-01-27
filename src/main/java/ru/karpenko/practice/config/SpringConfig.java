@@ -25,21 +25,6 @@ import org.thymeleaf.spring5.view.ThymeleafViewResolver;
 import javax.sql.DataSource;
 import java.util.Properties;
 
-//@PropertySource("classpath:hibernate.properties")
-//@EnableTransactionManagement
-//@EnableJpaRepositories("ru.alishev.springcourse.repositories")
-//@EnableWebMvc
-//public class SpringConfig implements WebMvcConfigurer {
-//
-//    private final ApplicationContext applicationContext;
-//
-//    private final Environment env;
-//
-//    @Autowired
-//    public SpringConfig(ApplicationContext applicationContext, Environment env) {
-//        this.applicationContext = applicationContext;
-//        this.env = env;
-//    }
 
 @Configuration
 @ComponentScan("ru.karpenko.practice")
