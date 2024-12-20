@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Index</title>
+    <link rel="stylesheet" th:href="@{http://localhost:8080/styles/css/style.css}"/>
 </head>
 <body>
 <div th:each="book : ${books}">
@@ -10,11 +11,16 @@
     th:text="${book.getName() + ', ' + book.getAuthor() + ', ' +  book.getYearOfIssue()}">book</a>
 </div>
 <br/>
-<hr/>
-<a href="/books/new">Добавить книгу</a>
+<form action="/books/new" method="get">
+    <button type="submit" class="button">Добавить книгу</button>
+</form>
 <br/>
-<a href="/people">Перейти к людям</a>
+<form action="/people" method="get">
+    <button type="submit" class="button">Перейти к людям</button>
+</form>
 <br/>
-<a href="/books/search">Поиск книг</a>
+<form action="/books/search" method="get">
+    <button type="submit" class="button">Поиск книг</button>
+</form>
 </body>
 </html>

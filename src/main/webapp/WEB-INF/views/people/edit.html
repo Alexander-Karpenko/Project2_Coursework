@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <title>Update person</title>
+    <link rel="stylesheet" th:href="@{http://localhost:8080/styles/css/style.css}"/>
 </head>
 <body>
-
 <form th:method="PATCH" th:action="@{/people/{id}(id=${person.getId()})}" th:object="${person}">
     <label for="name">Введите ФИО: </label>
     <input type="text" th:field="*{name}" id="name"/>
@@ -15,7 +15,8 @@
     <input type="text" th:field="*{age}" id="age"/>
     <div style="color:red" th:if="${#fields.hasErrors('age')}" th:errors="*{age}">Age Error</div>
     <br/>
-    <input type="submit" value="Редактировать"/>
+    <button type="submit" class="button">Редактировать</button>
+
 </form>
 
 </body>

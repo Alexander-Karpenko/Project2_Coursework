@@ -5,5 +5,5 @@ import org.springframework.stereotype.Repository;
 import ru.karpenko.practice.models.Person;
 
 @Repository
-public interface PeopleRepository extends JpaRepository<Person, Integer> {
+public interface PeopleRepository extends JpaRepository<Person, Long> {
 }

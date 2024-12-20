@@ -13,7 +13,7 @@ import ru.karpenko.practice.models.Person;
 import java.util.List;
 
 @Repository
-public interface BooksRepository extends JpaRepository<Book, Integer> {
+public interface BooksRepository extends JpaRepository<Book, Long> {
     List<Book> findByOwner (Person person);
     Page<Book> findAll(Pageable pageable);
     List<Book> findAll(Sort sort);

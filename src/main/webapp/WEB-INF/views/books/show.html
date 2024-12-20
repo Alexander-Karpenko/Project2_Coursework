@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Show</title>
+    <link rel="stylesheet" th:href="@{http://localhost:8080/styles/css/style.css}"/>
 </head>
 <body>
 <p th:text="${book.getName() + ', ' + book.getAuthor() + ', ' +  book.getYearOfIssue()}">book</p>
@@ -15,34 +16,22 @@
                     th:text="${person.getName()}">
             </option>
         </select>
-        <input type="submit" value="назначить книгу">
+        <button type="submit" class="button">Назначить книгу</button>
     </form>
 </div>
 <div th:if="${book.getOwner()} != null">
-    <a>Книга сейчас у: </a> <a th:text="${book.getOwner().getName()}">personName</a>
+    Книга сейчас у: <a th:href="@{/people/{id}(id=${book.getOwner().getId()})}" th:text="${book.getOwner().getName()}" >personName</a>
     <form th:method="PATCH" th:action="@{/books/{id}/release(id=${book.getId()})}">
-        <input type="submit" value="Освободить книгу">
+        <button type="submit" class="button">Освободить книгу</button>
     </form>
 </div>
 
-<hr/>
-<a th:href="@{/books/{id}/edit(id=${book.getId()})}"><input type="submit" value="Редактировать"/></a>
+<a th:href="@{/books/{id}/edit(id=${book.getId()})}">
+    <button type="submit" class="button">Редактировать</button>
+</a>
 
 <form th:method="DELETE" th:action="@{/books/{id}(id=${book.getId()})}">
-  <input type="submit" value="Удалить"/>
+    <button type="submit" class="button">Удалить</button>
 </form>
 </body>
 </html>
-
-<!--<body>-->
-<!--<form th:method="PATCH" th:action="@{/admin/add}">-->
-<!--    <label for="person">chose admin</label>-->
-<!--    <select th:object="${person}" th:field="*{id}" id="person">-->
-<!--        <option th:each="person: ${people}" th:value="${person.getId()}"-->
-<!--                th:text="${person.getName()}">-->
-
-<!--        </option>-->
-<!--    </select>-->
-<!--    <input type="submit" value="set admin">-->
-<!--</form>-->
-<!--</body>-->

@@ -1,23 +1,37 @@
 package ru.karpenko.practice.models;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import javax.management.relation.Role;
 import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 import java.util.List;
 
+@Getter
+@Setter
+@NoArgsConstructor
 @Entity
 @Table(name = "person", schema = "public")
 public class Person {
     @Id
     @Column(name = "person_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private long id;
 
     @Column(name = "name")
     @NotEmpty(message = "Name should not be empty")
-    @Size(min = 2, max = 30, message = "Name should be between 2 and 30 characters")
+    @Size(min = 2, max = 60, message = "Name should be between 2 and 30 characters")
     private String name;
+
+    @Column(name = "username")
+    private String username;
+
+    @Column(name = "password")
+    private String password;
 
     @Column(name = "age")
     @Min(value = 0, message = "Age should be greater than 0")
@@ -27,54 +41,15 @@ public class Person {
     private List<Book> books;
 
 
-    public Person() {
-    }
+    @Column(name = "role")
+    private String role;
 
-    public Person(String name, int age, List<Book> books) {
-        this.name = name;
-        this.age = age;
-        this.books = books;
-    }
+    @OneToMany(mappedBy = "voted_person")
+    private List<Vote> votes;
 
-    public int getId() {
-        return id;
-    }
+    @OneToMany(mappedBy = "commented_person")
+    private List<Comment> comments;
 
-    public void setId(int id) {
-        this.id = id;
-    }
 
-    public String getName() {
-        return name;
-    }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public int getAge() {
-        return age;
-    }
-
-    public void setAge(int age) {
-        this.age = age;
-    }
-
-    public List<Book> getBooks() {
-        return books;
-    }
-
-    public void setBooks(List<Book> books) {
-        this.books = books;
-    }
-
-    @Override
-    public String toString() {
-        return "Person{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", age=" + age +
-                ", books=" + books +
-                '}';
-    }
 }

@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Show</title>
+    <link rel="stylesheet" th:href="@{http://localhost:8080/styles/css/style.css}"/>
 </head>
 <body>
 <p th:text="${person.getName() + ', ' + person.getAge()}">VALUE</p>
@@ -20,14 +21,14 @@
             <p th:text="${book.getName()}">book_name</p>
         </div>
     </div>
-<!--    <p  th:each="book:${books}" th:text="${book.getName()}">book_name</p>-->
-<!--    <p  th:each="book:${books}" th:text="${book.isOverdue()}">book_name</p>-->
 </div>
 
-<a th:href="@{/people/{id}/edit(id=${person.getId()})}"><input type="submit" value="Редактировать"/></a>
+<a th:href="@{/people/{id}/edit(id=${person.getId()})}">
+    <button type="submit" class="button">Редактировать</button>
+</a>
 
 <form th:method="DELETE" th:action="@{/people/{id}(id=${person.getId()})}">
-    <input type="submit" value="Удалить"/>
+    <button type="submit" class="button">Удалить</button>
 </form>
 </body>
 </html>

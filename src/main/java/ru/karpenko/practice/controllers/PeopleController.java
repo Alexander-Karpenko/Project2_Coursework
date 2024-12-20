@@ -5,7 +5,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import ru.karpenko.practice.dao.PersonDAO;
 import ru.karpenko.practice.models.Person;
 import ru.karpenko.practice.models.Book;
 import ru.karpenko.practice.services.BooksService;
@@ -37,7 +36,7 @@ public class PeopleController {
     }
 
     @GetMapping("/{id}")
-    public String show(@PathVariable("id") int id, Model model) {
+    public String show(@PathVariable("id") long id, Model model) {
         Person person = peopleService.findOne(id);
         model.addAttribute("person", person);
         try {
@@ -64,14 +63,14 @@ public class PeopleController {
     }
 
     @GetMapping("/{id}/edit")
-    public String edit(Model model, @PathVariable("id") int id) {
+    public String edit(Model model, @PathVariable("id") long id) {
         model.addAttribute("person", peopleService.findOne(id));
         return "people/edit";
     }
 
     @PatchMapping("/{id}")
     public String update(@ModelAttribute("person") @Valid Person person, BindingResult bindingResult,
-                         @PathVariable("id") int id) {
+                         @PathVariable("id") long id) {
         if (bindingResult.hasErrors())
             return "people/edit";
 
@@ -80,9 +79,14 @@ public class PeopleController {
     }
 
     @DeleteMapping("/{id}")
-    public String delete(@PathVariable("id") int id) {
+    public String delete(@PathVariable("id") long id) {
         peopleService.delete(id);
         return "redirect:/people";
+    }
+
+    @GetMapping("/style")
+    public String styleTest(){
+        return "people/test";
     }
 
 }

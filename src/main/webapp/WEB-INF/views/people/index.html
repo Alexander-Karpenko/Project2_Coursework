@@ -3,20 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <title>Index</title>
+    <link rel="stylesheet" th:href="@{http://localhost:8080/styles/css/style.css}"/>
 </head>
 <body>
-
 <div th:each="person : ${people}">
     <a th:href="@{/people/{id}(id=${person.getId()})}"
        th:text="${person.getName() + ', ' + person.getAge()}">user</a>
 </div>
 
 <br/>
-<hr/>
 
-<a href="/people/new">Добавить нового человека</a>
+<form action="/people/new" method="get">
+    <button type="submit" class="button">Добавить нового человека</button>
+</form>
 <br/>
-<a href="/books">Перейти к книгам</a>
+<form action="/books" method="get">
+    <button type="submit" class="button">Перейти к книгам</button>
+</form>
 
 </body>
 </html>

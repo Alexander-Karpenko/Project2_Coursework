@@ -3,13 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <title>Search</title>
+    <link rel="stylesheet" th:href="@{http://localhost:8080/styles/css/style.css}"/>
 </head>
 <body>
 <form action="/books/search" method="get">
     <label for="search">Введите поисковый запрос: </label>
     <input type="search" required name="search" id="search">
     <br/>
-    <input type="submit" value="Искать!">
+    <button type="submit" class="button">Искать</button>
 </form>
 </body>
 </html>

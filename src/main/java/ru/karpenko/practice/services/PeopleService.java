@@ -22,7 +22,7 @@ public class PeopleService {
         return peopleRepository.findAll();
     }
 
-    public Person findOne(int id){
+    public Person findOne(long id){
         Optional<Person> foundPeople = peopleRepository.findById(id);
         return foundPeople.orElse(null);
     }
@@ -31,15 +31,14 @@ public class PeopleService {
         peopleRepository.save(person);
     }
     @Transactional
-    public void update(int id, Person updatedPerson){
+    public void update(long id, Person updatedPerson){
         updatedPerson.setId(id);
         peopleRepository.save(updatedPerson);
     }
     @Transactional
-    public void delete(int id){
+    public void delete(long id){
 
         peopleRepository.deleteById(id);
     }
-
 
 }
