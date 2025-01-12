@@ -31,7 +31,8 @@ public class BooksController {
     }
 
     @GetMapping()
-    public String index(Model model){
+    public String index(Model model,@CookieValue(value = "username", defaultValue = "Guest") String username ){
+        model.addAttribute("isAdmin", peopleService.isAdmin(username));
         model.addAttribute("books", booksService.findAll());
         return "books/index";
     }

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Show</title>
+    <link rel="stylesheet" th:href="@{http://localhost:8080/styles/css/style.css}"/>
+</head>
+<body>
+<div th:if="${role} == 'GUEST' ">
+    <h1>Приветствуем Вас в электронной библиотеке!</h1>
+    <br/>
+    Зарегистрируйтесь или войдите для дальнейшей работы.
+    <br/>
+    <br/>
+    <a th:href="@{/auth/authorization}">
+        <button type="submit" class="button">Зарегистрироватся</button>
+    </a>
+    <br/>
+    <br/>
+    <a th:href="@{/auth/login}">
+        <button type="submit" class="button">Войти</button>
+    </a>
+</div>
+
+<div th:if="${role} == 'USER' ">
+    <h1>Приветствуем <span th:text="${username}">username</span> в электронной библиотеке!</h1>
+    <form action="/books" method="get">
+        <button type="submit" class="button">Перейти к книгам</button>
+    </form>
+    <br/>
+    <form action="/books/search" method="get">
+        <button type="submit" class="button">Поиск книг</button>
+    </form>
+    <br/>
+    <form th:action="@{/people/{id}(id=${person.getId()})}" method="get">
+        <button type="submit" class="button">Страница профиля</button>
+    </form>
+</div>
+<div th:if="${role} == 'ADMIN' ">
+    <h1>Приветствуем <span th:text="${username}">username</span> в электронной библиотеке!</h1>
+
+    <form action="/people" method="get">
+        <button type="submit" class="button">Перейти к людям</button>
+    </form>
+    <br/>
+    <form action="/books" method="get">
+        <button type="submit" class="button">Перейти к книгам</button>
+    </form>
+    <br/>
+    <form action="/books/search" method="get">
+        <button type="submit" class="button">Поиск книг</button>
+    </form>
+    <br/>
+    <form th:action="@{/people/{id}(id=${person.getId()})}" method="get">
+        <button type="submit" class="button">Страница профиля</button>
+    </form>
+    <!--<form action="/people/new" method="get">-->
+    <!--    <button type="submit" class="button">Добавить нового человека</button>-->
+    <!--</form>-->
+</div>
+</body>
+</html>

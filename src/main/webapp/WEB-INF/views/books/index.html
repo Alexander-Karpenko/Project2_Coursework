@@ -11,16 +11,22 @@
     th:text="${book.getName() + ', ' + book.getAuthor() + ', ' +  book.getYearOfIssue()}">book</a>
 </div>
 <br/>
-<form action="/books/new" method="get">
-    <button type="submit" class="button">Добавить книгу</button>
-</form>
+<div th:if="${isAdmin} == true">
+    <form action="/books/new" method="get">
+        <button type="submit" class="button">Добавить книгу</button>
+    </form>
 <br/>
 <form action="/people" method="get">
     <button type="submit" class="button">Перейти к людям</button>
 </form>
 <br/>
+</div>
 <form action="/books/search" method="get">
     <button type="submit" class="button">Поиск книг</button>
+</form>
+<br/>
+<form action="/auth/welcome" method="get">
+    <button type="submit" class="button">На главную страницу</button>
 </form>
 </body>
 </html>

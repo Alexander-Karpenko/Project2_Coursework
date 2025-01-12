@@ -20,7 +20,7 @@
     <br/>
     <label for="genre">Выберите жанр книги</label>
 
-    <select th:object="${genre}" th:field="*{genre_id}" id="genre">
+    <select th:field="*{book_genre}" id="genre">
         <option th:each="genre: ${genres}" th:value="${genre.getId()}"
                 th:text="${genre.getName()}" >
         </option>

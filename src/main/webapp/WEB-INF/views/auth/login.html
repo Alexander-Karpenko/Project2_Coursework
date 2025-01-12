@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>login</title>
+    <link rel="stylesheet" th:href="@{http://localhost:8080/styles/css/style.css}"/>
+</head>
+<body>
+<form th:method="GET" th:action="@{/auth/enter}" th:object="${loginForm}">
+    <label for="username">Введите логин: </label>
+    <input type="text" th:field="*{username}" id="username"/>
+    <div style="color:red" th:if="${#fields.hasErrors('username')}" th:errors="*{username}">Name Error</div>
+    <br/>
+    <label for="password">Введите пароль: </label>
+    <input type="text" th:field="*{password}" id="password"/>
+    <div style="color:red" th:if="${#fields.hasErrors('username')}" th:errors="*{username}">Name Error</div>
+    <br/>
+    <button type="submit" class="button">Войти</button>
+</form>
+</body>
+</html>

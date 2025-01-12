@@ -12,7 +12,6 @@
 </div>
 <div th:if="${books.size()} != 0">
     <b><p>Книги:</p></b>
-<!--    <div th:if="${book.} == true"></div>-->
     <div th:each="book:${books}">
         <div style="color:red" th:if="${book.isOverdue()} == true">
             <p th:text="${book.getName()}">book_name</p>
@@ -26,9 +25,17 @@
 <a th:href="@{/people/{id}/edit(id=${person.getId()})}">
     <button type="submit" class="button">Редактировать</button>
 </a>
+<br/>
+<br/>
 
-<form th:method="DELETE" th:action="@{/people/{id}(id=${person.getId()})}">
-    <button type="submit" class="button">Удалить</button>
-</form>
+<a th:href="@{/auth/logout}">
+    <button type="submit" class="button">Выйти</button>
+</a>
+<br/>
+<div th:if="${isAdmin} == true">
+    <form th:method="DELETE" th:action="@{/people/{id}(id=${person.getId()})}">
+        <button type="submit" class="button">Удалить</button>
+    </form>
+</div>
 </body>
 </html>

@@ -8,8 +8,10 @@ import org.springframework.web.bind.annotation.*;
 import ru.karpenko.practice.models.Person;
 import ru.karpenko.practice.models.Book;
 import ru.karpenko.practice.services.BooksService;
+import ru.karpenko.practice.services.CookiesService;
 import ru.karpenko.practice.services.PeopleService;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -23,10 +25,13 @@ public class PeopleController {
 
     private final BooksService booksService;
 
+    private final CookiesService cookiesService;
+
     @Autowired
-    public PeopleController( PeopleService peopleService, BooksService booksService) {
+    public PeopleController(PeopleService peopleService, BooksService booksService, CookiesService cookiesService) {
         this.peopleService = peopleService;
         this.booksService = booksService;
+        this.cookiesService = cookiesService;
     }
 
     @GetMapping()
@@ -39,6 +44,7 @@ public class PeopleController {
     public String show(@PathVariable("id") long id, Model model) {
         Person person = peopleService.findOne(id);
         model.addAttribute("person", person);
+        model.addAttribute("isAdmin", peopleService.isAdmin(person.getUsername()));
         try {
             model.addAttribute("books", booksService.checkOverdue(booksService.findByOwner(person)));
         } catch (ParseException e) {
@@ -79,8 +85,9 @@ public class PeopleController {
     }
 
     @DeleteMapping("/{id}")
-    public String delete(@PathVariable("id") long id) {
+    public String delete(@PathVariable("id") long id, HttpServletResponse response ) {
         peopleService.delete(id);
+        cookiesService.deleteCookie(response);
         return "redirect:/people";
     }
 

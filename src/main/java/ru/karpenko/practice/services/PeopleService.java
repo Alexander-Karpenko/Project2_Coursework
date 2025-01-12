@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.karpenko.practice.models.Person;
 import ru.karpenko.practice.repositories.PeopleRepository;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,6 +27,21 @@ public class PeopleService {
         Optional<Person> foundPeople = peopleRepository.findById(id);
         return foundPeople.orElse(null);
     }
+
+    public Person findByUsername(String username){
+        Optional<Person> foundPeople = Optional.ofNullable(peopleRepository.findByUsername(username));
+        return foundPeople.orElse(null);
+    }
+
+    public boolean isAdmin(String username) {
+        Person foundPeople = peopleRepository.findByUsername(username);
+        if(foundPeople.getRole().equals("ADMIN")){
+            return true;
+        }else
+            return false;
+    }
+
+
     @Transactional
     public void save(Person person){
         peopleRepository.save(person);
@@ -37,7 +53,6 @@ public class PeopleService {
     }
     @Transactional
     public void delete(long id){
-
         peopleRepository.deleteById(id);
     }
 

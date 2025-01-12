@@ -6,4 +6,5 @@ import ru.karpenko.practice.models.Person;
 
 @Repository
 public interface PeopleRepository extends JpaRepository<Person, Long> {
+    Person findByUsername (String username);
 }

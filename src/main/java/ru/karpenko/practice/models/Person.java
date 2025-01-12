@@ -27,9 +27,11 @@ public class Person {
     @Size(min = 2, max = 60, message = "Name should be between 2 and 30 characters")
     private String name;
 
+    @NotEmpty(message = "Name should not be empty")
     @Column(name = "username")
     private String username;
 
+    @NotEmpty(message = "Name should not be empty")
     @Column(name = "password")
     private String password;
 

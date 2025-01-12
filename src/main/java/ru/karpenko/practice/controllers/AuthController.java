@@ -3,85 +3,87 @@ package ru.karpenko.practice.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import ru.karpenko.practice.models.LoginForm;
 import ru.karpenko.practice.models.Person;
+import ru.karpenko.practice.services.CookiesService;
 import ru.karpenko.practice.services.PeopleService;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 
 @Controller
 @RequestMapping("/auth")
 public class AuthController {
     private final PeopleService peopleService;
+    private final CookiesService cookiesService;
 
     @Autowired
-    public AuthController(PeopleService peopleService) {
+    public AuthController(PeopleService peopleService, CookiesService cookiesService) {
         this.peopleService = peopleService;
+        this.cookiesService = cookiesService;
     }
 
-    @GetMapping("/setCookie/{id}")
-    public String setCookie(@PathVariable("id") long id, HttpServletResponse response) {
-        Person person = peopleService.findOne(id);
-        String username = person.getName();
-        try {
-            Cookie usernameCookie = new Cookie("username", username);
-            usernameCookie.setPath("/");
-            usernameCookie.setMaxAge(7 * 24 * 60 * 60); // срок действия cookie в секундах (например, 7 дней)
-            response.addCookie(usernameCookie);
-
-        }catch (Exception exception){
-            System.out.println(exception);
-        }
-        return "auth/testCookie";
+    @GetMapping("/authorization")
+    public String showRegistrationForm(@ModelAttribute("person") Person person)  {
+        return "auth/authorization";
     }
 
+    @PostMapping()
+    public String register(@ModelAttribute("person") @Valid Person person,
+                           BindingResult bindingResult, HttpServletResponse response) {
+         if (bindingResult.hasErrors())
+             return "auth/authorization";
+         if (person.getUsername().equals("Guest"))
+             return "auth/authorization";
+         person.setRole("USER");
+         peopleService.save(person);
+         cookiesService.setCookie(person.getUsername(),response);
+         return "redirect:auth/welcome";
+    }
 
+    @GetMapping("/login")
+    public String showLoginForm(@ModelAttribute("loginForm") LoginForm loginForm)
+    {
+        return "auth/login";
+    }
 
-        @GetMapping("/authorization")
-        public String showRegistrationForm() {
-            return "auth/authorization";
+    @GetMapping("/enter") public String login(@ModelAttribute("loginForm") @Valid LoginForm loginForm,
+                                              BindingResult bindingResult, HttpServletResponse response) {
+        Person byUsername = peopleService.findByUsername(loginForm.getUsername());
+        if (byUsername == null){
+            return "auth/login";
         }
-
-        @PostMapping("/authorization")
-        public String register(@RequestParam String username, @RequestParam String password, Model model) {
-//            User user = new User();
-//            user.setUsername(username);
-//            user.setPassword(password);
-//            userService.save(user);
-//            model.addAttribute("message", "Registration successful");
-            return "redirect:auth/welcome";
+        if (bindingResult.hasErrors()){
+            System.out.println(bindingResult);
+            return "auth/login";
         }
-
-        @GetMapping("/login")
-        public String showLoginForm() {
-            return "login";
+        if(!byUsername.getPassword().equals(loginForm.getPassword())){
+            return "auth/login";
         }
+        cookiesService.deleteCookie(response);
+        cookiesService.setCookie(loginForm.getUsername(), response);
+        return "redirect:/auth/welcome";
+    }
 
-        @PostMapping("/login")
-        public String login(@RequestParam String username, @RequestParam String password, Model model) {
-            return "login";
+    @GetMapping("/welcome")
+    public String welcome(@CookieValue(value = "username", defaultValue = "Guest") String username, Model model) {
+        Person person = peopleService.findByUsername(username);
+        if(person != null) {
+            model.addAttribute("person", person);
+            model.addAttribute("username", username);
+            model.addAttribute("role", person.getRole());
+        }else {
+            model.addAttribute("role", "GUEST");
         }
+        return "auth/welcome";
+    }
 
-        @GetMapping("/welcome")
-        public String welcome() {
-            return "welcome";
-        }
-
-
-
-    @GetMapping("/deleteCookie")
-    public String deleteCookie( HttpServletResponse response) {
-        try {
-            Cookie usernameCookie = new Cookie("username", "");
-            usernameCookie.setPath("/");
-            usernameCookie.setMaxAge(7 * 24 * 60 * 60); // срок действия cookie в секундах (например, 7 дней)
-            response.addCookie(usernameCookie);
-
-        }catch (Exception exception){
-            System.out.println(exception);
-        }
-        return "auth/testCookie";
+    @GetMapping("/logout")
+    public String logout(HttpServletResponse response){
+        cookiesService.deleteCookie(response);
+        return "redirect:/auth/welcome";
     }
 
     @GetMapping("/getUser")
